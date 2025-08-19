@@ -33,6 +33,148 @@ penguins_df2 <- penguins |>
 
 # Joins
 ```{r}
+animals <- data.frame(
+  stringsAsFactors = FALSE,
+          location = c("lagoon", "bluff", "creek", "oaks", "bluff"),
+           species = c("bobcat", "coyote", "fox", "squirrel", "bobcat"),
+          maturity = c("adult", "juvenile", "adult", "juvenile", "adult")
+)
 
+sites <- data.frame(
+  stringsAsFactors = FALSE,
+          location = c("beach", "lagoon", "bluff", "oaks"),
+             full_site_name = c("Goleta Beach","UCSB Lagoon","Ellwood Mesa",
+                                "Fremont Campground"),
+      jurisdiction = c("SB City", "UCSB", "SB City", "USFS")
+         )
+```
+
+## Mutating
+### Full Join
+```{r}
+# keeps all rows and adds all cols
+full_join_example <- full_join(animals, sites)
+```
+
+### Left join
+```{r}
+# keeps all rows in x, y is matched to x 
+left_join_example <- left_join(animals, sites)
+```
+
+### Right join
+```{r}
+# keeps all rows in y, x is matched to y
+right_join_example <- right_join(animals, sites)
+```
+
+### Inner join
+```{r}
+inner_join_example <- inner_join(animals, sites)
+```
+
+## Filtering
+### Semi join
+```{r}
+semi_join_example <- semi_join(animals, sites)
+```
+
+### Anti join
+```{r}
+anti_join <- anti_join(animals, sites)
+```
+
+# Lubridation
+```{r}
+the_date <- "03-15-1998"
+lubridate::mdy(the_date)
+
+# other format
+the_date <- "08-Jun-1974"
+dmy(the_date)
+
+# anotha one
+the_date <- "19160518"
+ymd(the_date)
+```
+
+```{r}
+# date times
+time <- "2020-08-12 11:18"
+ymd_hm(time)
+
+# 'convert' to PDT
+with_tz(time, "America/Los_Angeles")
+
+# extract info
+week(time)
+week(time)
+
+# system time
+Sys.time()
+```
+
+```{r}
+urchin_count <- tribble(
+  ~date, ~species, ~size_mm,
+  "10/3/2020", "purple", 55,
+  "10/4/2020", "red", 48,
+  "11/17/2020", "red", 67
+)
+
+urchin_count_ymd <- urchin_count |> 
+  mutate(date = lubridate::mdy(date),
+         year = year(date),
+         month = month(date),
+         day = day(date))
+
+# day math
+day_1 <- ymd("2020-01-06")
+day_2 <- ymd("2020-5-18")
+day_3 <- ymd("2020-05-19")
+
+time_interval <- interval(day_1, day_2) # create time interval
+time_length(time_interval, "week") # how many weeks in this interval?
+```
+
+# Stringing
+## str_detect()
+```{r}
+my_string <- "Teddy loves eating salmon and socks."
+
+# Does the pattern "love" exist within the string?
+my_string |> 
+  str_detect("love")
+
+# also on vectors
+my_string <- c("burrito", "fish taco", "Taco salad")
+
+# Does the vector element contain the pattern "fish"?
+my_string |> 
+  str_detect("fish")
+```
+
+Combining with other functions
+
+## str_replace()
+```{r}
+starwars |> 
+  filter(str_detect(name, "Skywalker"))
+
+# str_replace
+firewalkers <- starwars |> 
+  mutate(name = str_replace(name, pattern = "Sky", replacement = "Fire"))
+```
+
+## str_squish and str_trim
+```{r}
+squish_me <- c(" I ate     some   nachos", "Wednesday morning   ")
+
+# Removes leading, trailing & duplicate interior whitespaces
+str_squish(squish_me)
+
+# Removes leading & trailing whitespaces
+trim_me <- c("              I ate     some   nachos", "Wednesday morning        ")
+str_trim(trim_me)
 ```
 
