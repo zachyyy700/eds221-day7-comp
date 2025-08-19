@@ -6,6 +6,33 @@ editor: visual
 ---
 
 ```{r}
-pacman::p_load("tidyverse", "palmerpenguins", "lubridate")
+pacman::p_load("tidyverse", "palmerpenguins", "lubridate", "datapasta")
+```
+
+# Wrangling Refresher with Penguins
+## 1.
+```{r}
+penguins_df <- penguins |> 
+  filter(island %in% c("Biscoe", "Dream")) |> # filter islands
+  select(-year, -sex) |> # delete year & sex cols
+  mutate(body_mass_kg = body_mass_g / 1000) |> # add col & convert g to kg
+  rename(location = "island") # rename island col
+```
+
+## 2. 
+```{r}
+penguins_df2 <- penguins |> 
+  filter(species == "Adelie",
+         !is.na(flipper_length_mm),
+         !is.na(sex)) |> 
+  group_by(sex) |> 
+  summarize(mean_flipper_len_mm = mean(flipper_length_mm), 
+            std_flipper_len_mm = sd(flipper_length_mm),
+            samplesize = n())
+```
+
+# Joins
+```{r}
+
 ```
 
