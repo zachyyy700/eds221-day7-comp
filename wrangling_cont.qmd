@@ -1,0 +1,11 @@
+---
+title: "wrangling_cont"
+author: "zachyloo"
+format: html
+editor: visual
+---
+
+```{r}
+pacman::p_load("tidyverse", "palmerpenguins", "lubridate")
+```
+
